@@ -17,5 +17,5 @@ RUN apt-get update && \
 ENV PATH="${PATH}:/opt/mssql-tools18/bin"
 
 # Set the environment variable with the versions of the installed tools
-RUN SQLCMD_VERSION=$(sqlcmd "-?" | grep -oP 'Version v\K[0-9.]+') && \
+RUN SQLCMD_VERSION=$(sqlcmd --version | head -n 1) && \
     echo "export SQLCMD_VERSION=${SQLCMD_VERSION}" >> ~/.bashrc
