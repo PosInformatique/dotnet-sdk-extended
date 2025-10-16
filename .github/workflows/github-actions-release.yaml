@@ -2,7 +2,7 @@
 
 on: workflow_dispatch
 
-run-name: ${{ github.event.repository.pushed_at | replace('T', ' ') | replace('Z', '') }}
+run-name: ${{ github.run_id }}
 
 jobs:
   build:
