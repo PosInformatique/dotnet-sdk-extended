@@ -2,6 +2,15 @@ ARG DOTNET_SDK_VERSION=9.0
 
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION}
 
+LABEL org.opencontainers.image.title="P.O.S Informatique - .NET SDK Extended"
+LABEL org.opencontainers.image.description="Extended .NET SDK Docker image with sqlcmd and additional utilities"
+LABEL org.opencontainers.image.version="${DOTNET_SDK_VERSION}"
+LABEL org.opencontainers.image.url="https://github.com/PosInformatique/dotnet-sdk-extended"
+LABEL org.opencontainers.image.source="https://github.com/PosInformatique/dotnet-sdk-extended"
+LABEL org.opencontainers.image.authors="Gilles TOURREAU <gilles.tourreau@pos-informatique.com>"
+LABEL org.opencontainers.image.vendor="P.O.S Informatique"
+LABEL org.opencontainers.image.licenses="MIT"
+
 # Install sqlcmd
 RUN apt-get update && \
     apt-get install -y curl apt-transport-https gnupg && \
