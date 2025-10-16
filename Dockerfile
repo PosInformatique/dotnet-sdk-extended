@@ -1,4 +1,6 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0
+ARG DOTNET_SDK_VERSION=9.0
+
+FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION}
 
 # Install sqlcmd
 RUN apt-get update && \
@@ -13,3 +15,7 @@ RUN apt-get update && \
 
 # Add sqlcmd to PATH (already in /opt/mssql-tools18/bin by default)
 ENV PATH="${PATH}:/opt/mssql-tools18/bin"
+
+# Set the environment variable with the versions of the installed tools
+RUN SQLCMD_VERSION=$(sqlcmd "-?" | grep -oP 'Version v\K[0-9.]+') && \
+    echo "export SQLCMD_VERSION=${SQLCMD_VERSION}" >> ~/.bashrc

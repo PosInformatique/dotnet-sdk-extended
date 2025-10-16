@@ -12,6 +12,12 @@ jobs:
     permissions:
       checks: write
       pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        dotnet_sdk_version:
+          - "9.0.305"
+          - "9.0.306"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,4 +31,17 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
-          tags: mssql-sqlcmd:ci
+          tags: dotnet-sdk-extended:${{ matrix.dotnet_sdk_version }}-ci
+          build-args: |
+            DOTNET_SDK_VERSION=${{ matrix.dotnet_sdk_version }}
+      
+      - name: Print versions of the tools
+        run: |
+          docker run --rm "dotnet-sdk-extended:${{ matrix.dotnet_sdk_version }}-ci" /bin/bash -lc '
+            echo "DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}";
+            echo "SQLCMD_VERSION=${SQLCMD_VERSION}";
+            echo "PATH=$PATH";
+            echo "dotnet --info (short):";
+            dotnet --version || true;
+            echo "sqlcmd -? (first lines):";
+            sqlcmd -? 2>&1 | head -n 5 || true
