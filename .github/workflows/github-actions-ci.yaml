@@ -9,15 +9,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     permissions:
       checks: write
       pull-requests: write
+
     strategy:
       fail-fast: false
       matrix:
         dotnet_sdk_version:
-          - "9.0.305"
+          - "9.0"
           - "9.0.306"
+
+    env:
+      IMAGE_NAME: dotnet-sdk-extended
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -32,18 +38,19 @@ jobs:
           file: ./Dockerfile
           push: false
           load: true
-          tags: dotnet-sdk-extended:${{ matrix.dotnet_sdk_version }}-ci
+          tags: ${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}-ci
           build-args: |
             DOTNET_SDK_VERSION=${{ matrix.dotnet_sdk_version }}
       
       - name: Print versions of the tools
         run: |
-          docker run --rm "dotnet-sdk-extended:${{ matrix.dotnet_sdk_version }}-ci" /bin/bash -lc '
+          docker run --rm "${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}-ci" /bin/bash -lc '
+            echo "******* Environment variables ******"
             echo "DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}";
             echo "SQLCMD_VERSION=${SQLCMD_VERSION}";
             echo "PATH=$PATH";
-            echo "dotnet --info (short):";
-            dotnet --version || true;
-            echo "sqlcmd -? (first lines):";
-            sqlcmd -? 2>&1 | head -n 5 || true
+            echo "******* .NET ******"
+            dotnet --info
+            echo "******* sqlcmd ******"
+            sqlcmd -? 2>&1
           '
