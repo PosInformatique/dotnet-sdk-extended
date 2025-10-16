@@ -2,7 +2,7 @@
 
 on: workflow_dispatch
 
-run-name: ${{ format(github.event.repository.pushed_at, 'yyyy-MM-dd HH:mm') }}"
+run-name: ${{ format(github.event.repository.pushed_at, 'yyyy-MM-dd HH:mm') }}
 
 jobs:
   build:
@@ -21,6 +21,7 @@ jobs:
 
     env:
       IMAGE_NAME: posinformatique/dotnet-sdk-extended
+      REGISTRY: ghcr.io
 
     steps:
       - name: Checkout repository
@@ -32,7 +33,7 @@ jobs:
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: "ghcr.io"
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -42,4 +43,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}
