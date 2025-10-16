@@ -38,6 +38,7 @@ jobs:
           file: ./Dockerfile
           push: false
           load: true
+          platforms: linux/amd64
           tags: ${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}-ci
           build-args: |
             DOTNET_SDK_VERSION=${{ matrix.dotnet_sdk_version }}
