@@ -45,3 +45,4 @@ jobs:
             dotnet --version || true;
             echo "sqlcmd -? (first lines):";
             sqlcmd -? 2>&1 | head -n 5 || true
+          '
