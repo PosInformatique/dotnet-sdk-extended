@@ -52,5 +52,5 @@ jobs:
             echo "******* .NET ******"
             dotnet --info
             echo "******* sqlcmd ******"
-            sqlcmd -? 2>&1
+            sqlcmd --version 2>&1
           '
