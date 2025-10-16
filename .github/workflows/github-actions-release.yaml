@@ -47,14 +47,5 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}
           build-args: |
             DOTNET_SDK_VERSION=${{ matrix.dotnet_sdk_version }}
-          labels: |
-            org.opencontainers.image.title=P.O.S Informatique - .NET SDK Extended
-            org.opencontainers.image.description=Extended .NET SDK Docker image with sqlcmd and additional utilities
-            org.opencontainers.image.version=${{ matrix.dotnet_sdk_version }}
-            org.opencontainers.image.url=https://github.com/PosInformatique/dotnet-sdk-extended
-            org.opencontainers.image.source=https://github.com/PosInformatique/dotnet-sdk-extended
-            org.opencontainers.image.authors=Gilles TOURREAU <gilles.tourreau@pos-informatique.com>
-            org.opencontainers.image.vendor=P.O.S Informatique
-            org.opencontainers.image.licenses=MIT
           no-cache: true
           provenance: false
