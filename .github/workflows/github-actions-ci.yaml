@@ -48,10 +48,16 @@ jobs:
           docker run --rm "${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}-ci" /bin/bash -lc '
             echo "******* Environment variables ******"
             echo "DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}";
+            echo "NODE_VERSION=${NODE_VERSION}";
+            echo "NPM_VERSION=${NPM_VERSION}";
             echo "SQLCMD_VERSION=${SQLCMD_VERSION}";
             echo "PATH=$PATH";
             echo "******* .NET ******"
             dotnet --info
+            echo "******* Node.JS ******"
+            node -v
+            echo "******* NPM ******"
+            npm -v
             echo "******* sqlcmd ******"
             sqlcmd --version 2>&1
           '
