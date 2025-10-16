@@ -2,7 +2,7 @@
 
 on: workflow_dispatch
 
-run-name: ${{ github.run_id }}
+run-name: ${{ github.run_number }}
 
 jobs:
   build:
