@@ -25,8 +25,10 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Add sqlcmd to PATH (already in /opt/mssql-tools18/bin by default)
-ENV PATH="${PATH}:/opt/mssql-tools18/bin"
+# Add the following path in the PATH:
+# - /opt/mssql-tools18/bin => For sqlcmd
+# - ~/.dotnet/tools => To access to installed dotnet tool (See https://github.com/dotnet/dotnet-docker/issues/520#issuecomment-388343613)
+ENV PATH="${PATH}:~/.dotnet/tools:/opt/mssql-tools18/bin"
 
 # Set the environment variable with the versions of the installed tools
 RUN NODE_VERSION=$(node -v) && \
