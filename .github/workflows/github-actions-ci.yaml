@@ -1,0 +1,63 @@
+﻿name: Continuous Integration
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "releases/**" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      checks: write
+      pull-requests: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        dotnet_sdk_version:
+          - "9.0"
+          - "9.0.306"
+
+    env:
+      IMAGE_NAME: dotnet-sdk-extended
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          platforms: linux/amd64
+          tags: ${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}-ci
+          build-args: |
+            DOTNET_SDK_VERSION=${{ matrix.dotnet_sdk_version }}
+      
+      - name: Print versions of the tools
+        run: |
+          docker run --rm "${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}-ci" /bin/bash -lc '
+            echo "******* Environment variables ******"
+            echo "DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}";
+            echo "NODE_VERSION=${NODE_VERSION}";
+            echo "NPM_VERSION=${NPM_VERSION}";
+            echo "SQLCMD_VERSION=${SQLCMD_VERSION}";
+            echo "PATH=$PATH";
+            echo "******* .NET ******"
+            dotnet --info
+            echo "******* Node.JS ******"
+            node -v
+            echo "******* NPM ******"
+            npm -v
+            echo "******* sqlcmd ******"
+            sqlcmd --version 2>&1
+          '
