@@ -11,7 +11,9 @@ LABEL org.opencontainers.image.authors="Gilles TOURREAU <gilles.tourreau@pos-inf
 LABEL org.opencontainers.image.vendor="P.O.S Informatique"
 LABEL org.opencontainers.image.licenses="MIT"
 
-# Install sqlcmd
+# Install :
+# - sqlcmd
+# - NodeJS
 RUN apt-get update && \
     apt-get install -y curl apt-transport-https gnupg && \
     curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
@@ -31,9 +33,9 @@ RUN apt-get update && \
 ENV PATH="${PATH}:~/.dotnet/tools:/opt/mssql-tools18/bin"
 
 # Set the environment variable with the versions of the installed tools
-RUN NODE_VERSION=$(node -v) && \
-    echo "export NODE_VERSION=${NODE_VERSION}" >> ~/.bashrc
-RUN NPM_VERSION=$(npm -v) && \
-    echo "export NPM_VERSION=${NPM_VERSION}" >> ~/.bashrc
-RUN SQLCMD_VERSION=$(sqlcmd --version | head -n 1) && \
+RUN NODE_VERSION=$(node -v | sed 's/^v//') && \
+    echo "export NODE_VERSION=${NODE_VERSION}" >> ~/.bashrc && \
+    NPM_VERSION=$(npm -v) && \
+    echo "export NPM_VERSION=${NPM_VERSION}" >> ~/.bashrc && \
+    SQLCMD_VERSION=$(sqlcmd --version | head -n 1) && \
     echo "export SQLCMD_VERSION=${SQLCMD_VERSION}" >> ~/.bashrc
