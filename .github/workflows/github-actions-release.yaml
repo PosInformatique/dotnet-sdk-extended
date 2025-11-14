@@ -2,7 +2,7 @@
 
 on: workflow_dispatch
 
-run-name: ${{ github.run_number }}
+run-name: "v9.0.307"
 
 jobs:
   build:
@@ -47,3 +47,19 @@ jobs:
       #       DOTNET_SDK_VERSION=${{ env.DOTNET_SDK_VERSION }}
       #     no-cache: true
       #     provenance: false
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ env.DOTNET_SDK_VERSION }}"
+          name: "v${{ env.DOTNET_SDK_VERSION }}"
+          body: |
+            Initial version of the image with the following tools:
+            - Node.js: v22.20.0 (LTS)
+            - npm: 10.9.3
+            - sqlcmd: 1.5.0
+
+            Based on [mcr.microsoft.com/dotnet/sdk:306](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about)
+          draft: true
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
