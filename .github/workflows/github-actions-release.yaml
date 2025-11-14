@@ -33,22 +33,29 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Check if Docker image exists
+      - name: Build and push (version)
+        uses: docker/build-push-action@v6
+        if: steps.check_image.outputs.exists == 'false'
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          platforms: linux/amd64
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}
+          build-args: |
+            DOTNET_SDK_VERSION=${{ env.DOTNET_SDK_VERSION }}
+          no-cache: true
+          provenance: false
+
+      - name: Get versions from Docker
+        id: docker_versions
         run: |
-          echo "Build the version '${{ env.DOTNET_SDK_VERSION }}'"
-      # - name: Build and push (version)
-      #   uses: docker/build-push-action@v6
-      #   if: steps.check_image.outputs.exists == 'false'
-      #   with:
-      #     context: .
-      #     file: ./Dockerfile
-      #     push: true
-      #     platforms: linux/amd64
-      #     tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}
-      #     build-args: |
-      #       DOTNET_SDK_VERSION=${{ env.DOTNET_SDK_VERSION }}
-      #     no-cache: true
-      #     provenance: false
+          docker run --rm "${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}" /bin/bash -lc '
+            echo "NODE_VERSION=${NODE_VERSION}"
+            echo "NPM_VERSION=${NPM_VERSION}"
+            echo "SQLCMD_VERSION=${SQLCMD_VERSION}"
+          ' >> $GITHUB_OUTPUT
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -56,10 +63,10 @@ jobs:
           name: "v${{ env.DOTNET_SDK_VERSION }}"
           body: |
             Initial version of the image with the following tools:
-            - Node.js: v22.20.0 (LTS)
-            - npm: 10.9.3
-            - sqlcmd: 1.5.0
+            - Node.js: v$${{ env.NODE_VERSION }}
+            - npm: v$${{ env.NPM_VERSION }}
+            - sqlcmd: v$${{ env.SQLCMD_VERSION }}
 
-            Based on [mcr.microsoft.com/dotnet/sdk:306](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about)
+            Based on [mcr.microsoft.com/dotnet/sdk:${{ env.DOTNET_SDK_VERSION }}](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about)
           draft: true
           prerelease: false
