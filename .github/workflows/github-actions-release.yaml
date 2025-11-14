@@ -2,7 +2,10 @@
 
 on: workflow_dispatch
 
-run-name: "v9.0.307"
+env:
+  DOTNET_SDK_VERSION: "9.0.307"
+
+run-name: "v$${DOTNET_SDK_VERSION}}"
 
 jobs:
   build:
@@ -13,7 +16,6 @@ jobs:
       packages: write
 
     env:
-      DOTNET_SDK_VERSION: "9.0.307"
       IMAGE_NAME: posinformatique/dotnet-sdk-extended
       REGISTRY: ghcr.io
 
