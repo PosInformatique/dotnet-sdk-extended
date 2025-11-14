@@ -5,7 +5,7 @@ on: workflow_dispatch
 env:
   DOTNET_SDK_VERSION: "9.0.307"
 
-run-name: "v$${DOTNET_SDK_VERSION}}"
+run-name: "v${{DOTNET_SDK_VERSION}}"
 
 jobs:
   build:
@@ -63,5 +63,3 @@ jobs:
             Based on [mcr.microsoft.com/dotnet/sdk:306](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about)
           draft: true
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
