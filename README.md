@@ -17,7 +17,7 @@ Image registry:
 ## Tags
 - Exact SDK versions:
   - [9.0.306](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
-- Moving major tag: [9.0](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/) (points to the latest 9.0.x, currently 9.0.306)
+  - [9.0.307](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
 
 ## Tool versions
 - Node.js: v22.20.0 (LTS)

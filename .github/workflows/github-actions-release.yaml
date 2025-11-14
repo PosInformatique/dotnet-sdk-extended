@@ -2,22 +2,18 @@
 
 on: workflow_dispatch
 
-run-name: ${{ github.run_number }}
+env:
+  DOTNET_SDK_VERSION: "9.0.307"
+
+run-name: "v9.0.307"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write
       packages: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        dotnet_sdk_version:
-          - "9.0"
-          - "9.0.306"
 
     env:
       IMAGE_NAME: posinformatique/dotnet-sdk-extended
@@ -43,9 +39,34 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
+          load: true
           platforms: linux/amd64
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}
           build-args: |
-            DOTNET_SDK_VERSION=${{ matrix.dotnet_sdk_version }}
+            DOTNET_SDK_VERSION=${{ env.DOTNET_SDK_VERSION }}
           no-cache: true
           provenance: false
+
+      - name: Get tools versions from Docker
+        id: tools_versions
+        run: |
+          docker run --rm "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}" /bin/bash -lc '
+            echo "NODE_VERSION=${NODE_VERSION}"
+            echo "NPM_VERSION=${NPM_VERSION}"
+            echo "SQLCMD_VERSION=${SQLCMD_VERSION}"
+          ' >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ env.DOTNET_SDK_VERSION }}"
+          name: "v${{ env.DOTNET_SDK_VERSION }}"
+          body: |
+            Initial version of the image with the following tools:
+            - Node.js: v${{ steps.tools_versions.outputs.NODE_VERSION }}
+            - npm: v${{ steps.tools_versions.outputs.NPM_VERSION }}
+            - sqlcmd: ${{ steps.tools_versions.outputs.SQLCMD_VERSION }}
+
+            Based on [mcr.microsoft.com/dotnet/sdk:${{ env.DOTNET_SDK_VERSION }}](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about)
+          draft: true
+          prerelease: false

@@ -14,14 +14,8 @@ jobs:
       checks: write
       pull-requests: write
 
-    strategy:
-      fail-fast: false
-      matrix:
-        dotnet_sdk_version:
-          - "9.0"
-          - "9.0.306"
-
     env:
+      DOTNET_SDK_VERSION: "9.0.307"
       IMAGE_NAME: dotnet-sdk-extended
 
     steps:
@@ -39,13 +33,13 @@ jobs:
           push: false
           load: true
           platforms: linux/amd64
-          tags: ${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}-ci
+          tags: ${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}-ci
           build-args: |
-            DOTNET_SDK_VERSION=${{ matrix.dotnet_sdk_version }}
+            DOTNET_SDK_VERSION=${{ env.DOTNET_SDK_VERSION }}
       
       - name: Print versions of the tools
         run: |
-          docker run --rm "${{ env.IMAGE_NAME }}:${{ matrix.dotnet_sdk_version }}-ci" /bin/bash -lc '
+          docker run --rm "${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}-ci" /bin/bash -lc '
             echo "******* Environment variables ******"
             echo "DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}";
             echo "NODE_VERSION=${NODE_VERSION}";
