@@ -47,7 +47,7 @@ jobs:
           no-cache: true
           provenance: false
 
-      - name: Get versions from Docker
+      - name: Get tools versions from Docker
         id: tools_versions
         run: |
           docker run --rm "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}" /bin/bash -lc '
@@ -65,7 +65,7 @@ jobs:
             Initial version of the image with the following tools:
             - Node.js: v${{ steps.tools_versions.outputs.NODE_VERSION }}
             - npm: v${{ steps.tools_versions.outputs.NPM_VERSION }}
-            - sqlcmd: v${{ steps.tools_versions.outputs.SQLCMD_VERSION }}
+            - sqlcmd: ${{ steps.tools_versions.outputs.SQLCMD_VERSION }}
 
             Based on [mcr.microsoft.com/dotnet/sdk:${{ env.DOTNET_SDK_VERSION }}](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about)
           draft: true
