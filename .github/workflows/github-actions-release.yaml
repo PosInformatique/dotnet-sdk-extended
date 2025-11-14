@@ -35,7 +35,6 @@ jobs:
 
       - name: Build and push (version)
         uses: docker/build-push-action@v6
-        if: steps.check_image.outputs.exists == 'false'
         with:
           context: .
           file: ./Dockerfile
