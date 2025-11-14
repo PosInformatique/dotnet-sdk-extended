@@ -63,9 +63,9 @@ jobs:
           name: "v${{ env.DOTNET_SDK_VERSION }}"
           body: |
             Initial version of the image with the following tools:
-            - Node.js: v$${{ steps.tools_versions.outputs.NODE_VERSION }}
-            - npm: v$${{ steps.tools_versions.outputs.NPM_VERSION }}
-            - sqlcmd: v$${{ steps.tools_versions.outputs.SQLCMD_VERSION }}
+            - Node.js: v${{ steps.tools_versions.outputs.NODE_VERSION }}
+            - npm: v${{ steps.tools_versions.outputs.NPM_VERSION }}
+            - sqlcmd: v${{ steps.tools_versions.outputs.SQLCMD_VERSION }}
 
             Based on [mcr.microsoft.com/dotnet/sdk:${{ env.DOTNET_SDK_VERSION }}](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about)
           draft: true
