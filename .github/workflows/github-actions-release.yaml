@@ -49,7 +49,7 @@ jobs:
       - name: Get versions from Docker
         id: docker_versions
         run: |
-          docker run --rm "${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}" /bin/bash -lc '
+          docker run --rm "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}" /bin/bash -lc '
             echo "NODE_VERSION=${NODE_VERSION}"
             echo "NPM_VERSION=${NPM_VERSION}"
             echo "SQLCMD_VERSION=${SQLCMD_VERSION}"
