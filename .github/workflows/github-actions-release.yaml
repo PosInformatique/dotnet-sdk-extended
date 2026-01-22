@@ -3,9 +3,9 @@
 on: workflow_dispatch
 
 env:
-  DOTNET_SDK_VERSION: "9.0.307"
+  DOTNET_SDK_VERSION: "9.0.308"
 
-run-name: "v9.0.307"
+run-name: "v9.0.308"
 
 jobs:
   build:

@@ -2,7 +2,7 @@
 Extended .NET SDK Docker image with sqlcmd, Node.js, and additional utilities
 
 ## Overview
-dotnet-sdk-extended is a Docker image based on Microsoft’s [mcr.microsoft.com/dotnet/sdk](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about). It adds commonly needed build-time tools so your .NET builds run faster and more reliably in CI.
+dotnet-sdk-extended is a Docker image based on Microsoft's [mcr.microsoft.com/dotnet/sdk](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about). It adds commonly needed build-time tools so your .NET builds run faster and more reliably in CI.
 
 Included tools:
 - Node.js (with npm)
@@ -18,10 +18,11 @@ Image registry:
 - Exact SDK versions:
   - [9.0.306](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
   - [9.0.307](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
+  - [9.0.308](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
 
 ## Tool versions
-- Node.js: v22.20.0 (LTS)
-- npm: 10.9.3
+- Node.js: v22.22.0 (LTS)
+- npm: 10.9.4
 - sqlcmd: 1.5.0
 
 ## Environment variables
@@ -121,4 +122,3 @@ jobs:
 
 ## Notes
 - The base is the official .NET SDK image; only build-time tools are added.
-- Prefer the exact tag (e.g., 9.0.306) for reproducible builds; use 9.0 for convenience and automatic updates within the major line.
