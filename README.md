@@ -19,6 +19,8 @@ Image registry:
   - [9.0.306](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
   - [9.0.307](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
   - [9.0.308](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
+  - [9.0.309](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
+  - [9.0.310](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
 
 ## Tool versions
 - Node.js: v22.22.0 (LTS)
