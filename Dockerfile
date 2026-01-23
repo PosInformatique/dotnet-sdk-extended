@@ -11,6 +11,10 @@ LABEL org.opencontainers.image.authors="Gilles TOURREAU <gilles.tourreau@pos-inf
 LABEL org.opencontainers.image.vendor="P.O.S Informatique"
 LABEL org.opencontainers.image.licenses="MIT"
 
+# Fix the warning "##[warning]Using Node 20 for container startup."
+# See: https://github.com/microsoft/azure-pipelines-agent/issues/5453
+LABEL "com.azure.dev.pipelines.agent.handler.node.path"="/usr/bin/node"
+
 # Install :
 # - sqlcmd
 # - NodeJS
