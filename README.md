@@ -24,8 +24,8 @@ Image registry:
   - [10.0.201](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
 
 ## Tool versions
-- Node.js: v22.22.0 (LTS)
-- npm: 10.9.4
+- Node.js: 24.13.0 (LTS)
+- npm: 11.6.2
 - sqlcmd: 1.5.0
 
 ## Environment variables
