@@ -1,4 +1,4 @@
-ARG DOTNET_SDK_VERSION=9.0
+ARG DOTNET_SDK_VERSION=10.0
 
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION}
 
@@ -24,7 +24,7 @@ RUN apt-get update && \
     curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | tee /etc/apt/sources.list.d/msprod.list && \
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
       | gpg --dearmor -o /usr/share/keyrings/nodesource.gpg; \
-    echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" \
+    echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_24.x nodistro main" \
       > /etc/apt/sources.list.d/nodesource.list; \
     apt-get update && \
     ACCEPT_EULA=Y apt-get install -y sqlcmd nodejs && \
