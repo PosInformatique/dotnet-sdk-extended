@@ -15,7 +15,7 @@ jobs:
       pull-requests: write
 
     env:
-      DOTNET_SDK_VERSION: "10.0.201"
+      DOTNET_SDK_VERSION: "10.0.300"
       IMAGE_NAME: dotnet-sdk-extended
 
     steps:
