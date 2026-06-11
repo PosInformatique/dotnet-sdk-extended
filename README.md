@@ -1,5 +1,5 @@
 # dotnet-sdk-extended
-Extended .NET SDK Docker image with sqlcmd, Node.js, and additional utilities
+Extended .NET SDK Docker image with sqlcmd, Node.js, archive tools, and additional utilities
 
 ## Overview
 dotnet-sdk-extended is a Docker image based on Microsoft's [mcr.microsoft.com/dotnet/sdk](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about). It adds commonly needed build-time tools so your .NET builds run faster and more reliably in CI.
@@ -7,6 +7,10 @@ dotnet-sdk-extended is a Docker image based on Microsoft's [mcr.microsoft.com/do
 Included tools:
 - Node.js (with npm)
 - sqlcmd (cross-platform)
+- zip
+- 7z
+- tar
+- wim (via wimtools)
 
 Image registry:
 - ghcr.io/posinformatique/dotnet-sdk-extended
@@ -33,7 +37,11 @@ Image registry:
 The image exposes the installed versions via:
 - `NPM_VERSION`
 - `NODE_VERSION`
+- `SEVENZIP_VERSION`
 - `SQLCMD_VERSION`
+- `TAR_VERSION`
+- `WIM_VERSION`
+- `ZIP_VERSION`
 
 These can be inspected in your CI steps if needed.
 

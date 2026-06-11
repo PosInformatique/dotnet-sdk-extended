@@ -18,6 +18,7 @@ LABEL "com.azure.dev.pipelines.agent.handler.node.path"="/usr/bin/node"
 # Install :
 # - sqlcmd
 # - NodeJS
+# - Archive tools (zip, 7z, tar, wim)
 RUN apt-get update && \
     apt-get install -y curl apt-transport-https gnupg && \
     curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
@@ -27,7 +28,7 @@ RUN apt-get update && \
     echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_24.x nodistro main" \
       > /etc/apt/sources.list.d/nodesource.list; \
     apt-get update && \
-    ACCEPT_EULA=Y apt-get install -y sqlcmd nodejs && \
+    ACCEPT_EULA=Y apt-get install -y sqlcmd nodejs zip p7zip-full tar wimtools && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -38,8 +39,16 @@ ENV PATH="${PATH}:~/.dotnet/tools:/opt/mssql-tools18/bin"
 
 # Set the environment variable with the versions of the installed tools
 RUN NODE_VERSION=$(node -v | sed 's/^v//') && \
-    echo "export NODE_VERSION=${NODE_VERSION}" >> ~/.bashrc && \
-    NPM_VERSION=$(npm -v) && \
-    echo "export NPM_VERSION=${NPM_VERSION}" >> ~/.bashrc && \
-    SQLCMD_VERSION=$(sqlcmd --version | head -n 1) && \
-    echo "export SQLCMD_VERSION=${SQLCMD_VERSION}" >> ~/.bashrc
+  echo "export NODE_VERSION=\"${NODE_VERSION}\"" >> ~/.bashrc && \
+  NPM_VERSION=$(npm -v) && \
+  echo "export NPM_VERSION=\"${NPM_VERSION}\"" >> ~/.bashrc && \
+  SEVENZIP_VERSION=$(7z i | awk '/^7-Zip/{print $2; exit}') && \
+  echo "export SEVENZIP_VERSION=\"${SEVENZIP_VERSION}\"" >> ~/.bashrc && \
+  SQLCMD_VERSION=$(sqlcmd --version | head -n 1) && \
+  echo "export SQLCMD_VERSION=\"${SQLCMD_VERSION}\"" >> ~/.bashrc && \
+  TAR_VERSION=$(tar --version | awk '/^tar/{print $4; exit}') && \
+  echo "export TAR_VERSION=\"${TAR_VERSION}\"" >> ~/.bashrc && \
+  WIM_VERSION=$(wimlib-imagex --version | awk -F' \(using ' 'NR==1{print $1}') && \
+  echo "export WIM_VERSION=\"${WIM_VERSION}\"" >> ~/.bashrc && \
+  ZIP_VERSION=$(zip -v | awk '/^This is Zip/{print $4; exit}') && \
+  echo "export ZIP_VERSION=\"${ZIP_VERSION}\"" >> ~/.bashrc
