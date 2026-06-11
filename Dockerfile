@@ -39,16 +39,25 @@ ENV PATH="${PATH}:~/.dotnet/tools:/opt/mssql-tools18/bin"
 
 # Set the environment variable with the versions of the installed tools
 RUN NODE_VERSION=$(node -v | sed 's/^v//') && \
-  echo "export NODE_VERSION=\"${NODE_VERSION}\"" >> ~/.bashrc && \
   NPM_VERSION=$(npm -v) && \
-  echo "export NPM_VERSION=\"${NPM_VERSION}\"" >> ~/.bashrc && \
   SEVENZIP_VERSION=$(7z i | awk '/^7-Zip/{print $2; exit}') && \
-  echo "export SEVENZIP_VERSION=\"${SEVENZIP_VERSION}\"" >> ~/.bashrc && \
   SQLCMD_VERSION=$(sqlcmd --version | head -n 1) && \
-  echo "export SQLCMD_VERSION=\"${SQLCMD_VERSION}\"" >> ~/.bashrc && \
   TAR_VERSION=$(tar --version | awk '/^tar/{print $4; exit}') && \
-  echo "export TAR_VERSION=\"${TAR_VERSION}\"" >> ~/.bashrc && \
   WIM_VERSION=$(wimlib-imagex --version | awk -F' \(using ' 'NR==1{print $1}') && \
-  echo "export WIM_VERSION=\"${WIM_VERSION}\"" >> ~/.bashrc && \
   ZIP_VERSION=$(zip -v | awk '/^This is Zip/{print $4; exit}') && \
-  echo "export ZIP_VERSION=\"${ZIP_VERSION}\"" >> ~/.bashrc
+  cat > /etc/profile.d/tool-versions.sh <<EOF
+export NODE_VERSION="${NODE_VERSION}"
+export NPM_VERSION="${NPM_VERSION}"
+export SEVENZIP_VERSION="${SEVENZIP_VERSION}"
+export SQLCMD_VERSION="${SQLCMD_VERSION}"
+export TAR_VERSION="${TAR_VERSION}"
+export WIM_VERSION="${WIM_VERSION}"
+export ZIP_VERSION="${ZIP_VERSION}"
+EOF
+
+# Entrypoint: always inject tool version environment variables in the current shell.
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["/bin/bash"]
