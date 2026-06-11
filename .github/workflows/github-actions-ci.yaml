@@ -44,7 +44,12 @@ jobs:
             echo "DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}";
             echo "NODE_VERSION=${NODE_VERSION}";
             echo "NPM_VERSION=${NPM_VERSION}";
+            echo "SEVENZIP_VERSION=${SEVENZIP_VERSION}";
             echo "SQLCMD_VERSION=${SQLCMD_VERSION}";
+            echo "TAR_VERSION=${TAR_VERSION}";
+            echo "WIM_VERSION=${WIM_VERSION}";
+            echo "ZIP_VERSION=${ZIP_VERSION}";
+            echo "";
             echo "PATH=$PATH";
             echo "******* .NET ******"
             dotnet --info
