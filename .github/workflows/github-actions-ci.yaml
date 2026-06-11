@@ -40,6 +40,7 @@ jobs:
       - name: Print versions of the tools
         run: |
           docker run --rm "${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}-ci" /bin/bash -lc '
+            source ~/.bashrc
             echo "******* Environment variables ******"
             echo "DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}";
             echo "NODE_VERSION=${NODE_VERSION}";
@@ -51,20 +52,28 @@ jobs:
             echo "ZIP_VERSION=${ZIP_VERSION}";
             echo "";
             echo "PATH=$PATH";
+            echo "";
             echo "******* .NET ******"
             dotnet --info
+            echo "";
             echo "******* Node.JS ******"
             node -v
+            echo "";
             echo "******* NPM ******"
             npm -v
+            echo "";
             echo "******* sqlcmd ******"
             sqlcmd --version 2>&1
+            echo "";
             echo "******* 7-Zip ******"
             7z i
+            echo "";
             echo "******* Tar ******"
             tar --version
+            echo "";
             echo "******* WIM ******"
             wimlib-imagex --version
+            echo "";
             echo "******* Zip ******"
             zip --version
           '
