@@ -59,4 +59,12 @@ jobs:
             npm -v
             echo "******* sqlcmd ******"
             sqlcmd --version 2>&1
+            echo "******* 7-Zip ******"
+            7z i
+            echo "******* Tar ******"
+            tar --version
+            echo "******* WIM ******"
+            wimlib-imagex --version
+            echo "******* Zip ******"
+            zip --version
           '
