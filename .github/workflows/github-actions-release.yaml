@@ -51,6 +51,7 @@ jobs:
         id: tools_versions
         run: |
           docker run --rm "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOTNET_SDK_VERSION }}" /bin/bash -lc '
+            source ~/.bashrc
             echo "NODE_VERSION=${NODE_VERSION}"
             echo "NPM_VERSION=${NPM_VERSION}"
             echo "SEVENZIP_VERSION=${SEVENZIP_VERSION}"
