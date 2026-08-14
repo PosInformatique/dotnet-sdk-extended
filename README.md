@@ -32,8 +32,8 @@ Image registry:
 
 ## Tool versions
 - 7-zip: 23.01
-- Node.js: 24.18.0 (LTS)
-- npm: 11.16.0
+- Node.js: 24.19.0 (LTS)
+- npm: 11.17.0
 - sqlcmd: 1.5.0
 - tar: 1.35
 - wim: 1.14.4-1.1build2
