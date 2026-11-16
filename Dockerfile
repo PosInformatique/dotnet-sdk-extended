@@ -1,4 +1,4 @@
-ARG DOTNET_SDK_VERSION=10.0
+ARG DOTNET_SDK_VERSION=11.0
 
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION}
 
@@ -19,18 +19,22 @@ LABEL "com.azure.dev.pipelines.agent.handler.node.path"="/usr/bin/node"
 # - sqlcmd
 # - NodeJS
 # - Archive tools (zip, 7z, tar, wim)
-RUN apt-get update && \
-    apt-get install -y curl apt-transport-https gnupg && \
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | tee /etc/apt/sources.list.d/msprod.list && \
-    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
-      | gpg --dearmor -o /usr/share/keyrings/nodesource.gpg; \
-    echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_24.x nodistro main" \
+RUN set -eu; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends ca-certificates curl gnupg; \
+    mkdir -p /usr/share/keyrings; \
+    curl -fsSL https://packages.microsoft.com/keys/microsoft-2025.asc -o /tmp/microsoft.asc; \
+    gpg --dearmor --yes --output /usr/share/keyrings/microsoft-prod.gpg /tmp/microsoft.asc; \
+    curl -fsSL https://packages.microsoft.com/config/ubuntu/26.04/prod.list \
+      -o /etc/apt/sources.list.d/msprod.list; \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key -o /tmp/nodesource.asc; \
+    gpg --dearmor --yes --output /usr/share/keyrings/nodesource.gpg /tmp/nodesource.asc; \
+    echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_26.x nodistro main" \
       > /etc/apt/sources.list.d/nodesource.list; \
-    apt-get update && \
-    ACCEPT_EULA=Y apt-get install -y sqlcmd nodejs zip p7zip-full tar wimtools && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get update; \
+    ACCEPT_EULA=Y apt-get install -y --no-install-recommends mssql-tools18 nodejs zip p7zip-full tar wimtools; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/* /tmp/microsoft.asc /tmp/nodesource.asc
 
 # Add the following path in the PATH:
 # - /opt/mssql-tools18/bin => For sqlcmd
@@ -41,9 +45,9 @@ ENV PATH="${PATH}:~/.dotnet/tools:/opt/mssql-tools18/bin"
 RUN NODE_VERSION=$(node -v | sed 's/^v//') && \
   NPM_VERSION=$(npm -v) && \
   SEVENZIP_VERSION=$(7z i | awk '/^7-Zip/{print $2; exit}') && \
-  SQLCMD_VERSION=$(sqlcmd --version | head -n 1) && \
+  SQLCMD_VERSION=$(sqlcmd -? 2>&1 | awk '/^Version / {print $2; exit}') && \
   TAR_VERSION=$(tar --version | awk '/^tar/{print $4; exit}') && \
-  WIM_VERSION=$(wimlib-imagex --version | awk -F' \(using ' 'NR==1{print $1}') && \
+  WIM_VERSION=$(wimlib-imagex --version | awk 'NR==1{print $2}') && \
   ZIP_VERSION=$(zip -v | awk '/^This is Zip/{print $4; exit}') && \
   cat > /etc/profile.d/tool-versions.sh <<EOF
 export NODE_VERSION="${NODE_VERSION}"

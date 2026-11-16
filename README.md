@@ -29,14 +29,15 @@ Image registry:
   - [10.0.300](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
   - [10.0.302](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
   - [10.0.400](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
+  - [11.0.100](https://github.com/PosInformatique/dotnet-sdk-extended/pkgs/container/dotnet-sdk-extended/)
 
 ## Tool versions
-- 7-zip: 23.01
-- Node.js: 24.19.0 (LTS)
-- npm: 11.17.0
-- sqlcmd: 1.5.0
+- 7-zip: 26.00
+- Node.js: 26.13.1 (LTS)
+- npm: 11.20.0
+- sqlcmd: 18.7.0001.1
 - tar: 1.35
-- wim: 1.14.4-1.1build2
+- wim: 1.14.5
 - zip: 3.0
 
 ## Environment variables
